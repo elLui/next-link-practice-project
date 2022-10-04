@@ -1,22 +1,36 @@
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 import { getEventById } from "../../dummy-data";
+import { Fragment } from "react";
+import EventSummary from "../../components/event-detail/event-summary";
+import EventLogistics from "../../components/event-detail/event-logistics";
+import EventContent from "../../components/event-detail/event-content";
 
 
-export default function EventDetailPage() {
-    const router = useRouter();
+export default function EventDetailPage () {
 
-    const eventId = router.query.eventID;
-    const event = getEventById(eventId);
+
+    const router = useRouter ();
+    const eventId = router.query.eventId;
+
+    const event = getEventById (eventId);
 
     if (!event) {
-        return (
-            <div>
-                <h1>no event found</h1>
-            </div>
-        )
+        return (<div>
+            <h1>no event found</h1>
+        </div>)
     }
 
-    return (
-        <h1>event detail page</h1>
-    )
+    return (// fragments are needed if you have adjacent JSX elements
+        <Fragment>
+            <EventSummary title={ event.title }/>
+            <EventLogistics
+                date={ event.date }
+                address={ event.location }
+                image={ event.image }
+                imageAlt={ event.title }
+            />
+            <EventContent><p>{ event.description }</p></EventContent>
+
+
+        </Fragment>)
 }
